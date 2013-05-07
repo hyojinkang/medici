@@ -1,0 +1,84 @@
+<p id="notice"><%= notice %></p>
+
+
+<div class="page-header">
+  <h2><%= @talk.title %></h2>
+</div>
+
+<table class="table table-striped">
+	<tbody>
+		<tr>
+			<td>
+  				<strong>Meeting Date:</strong>
+			</td>
+			<td>
+				<%= @talk.meetingdate %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+  				<strong>Speaker:</strong>
+			</td>
+			<td>
+				<%= @talk.name %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+  				<strong>Description:</strong>
+			</td>
+			<td>
+				<%= @talk.desc %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+  				<strong>Attendees:</strong>
+			</td>
+			<td>
+				<table class="table table-striped">
+					<tbody>
+
+					<% if @users %>
+
+					<% @users.each do |attend| %>
+					  <tr>
+						<td>
+				        <%= gravatar_for attend.user size: 30 %>
+						<%= attend.user.name %>
+						</td>
+					</tr>
+
+				    <% end %>
+					<% end %>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		
+		
+	</tbody>
+</table>
+
+<div align='center'>
+<%= raw(@talk.url) %>
+</div>
+
+
+<div class="form-actions">
+  <% if signed_in? and attendee?(@talk) %>
+
+  <%= button_to 'Attend', attendance_lists_path(talk_id: @talk), class: "btn btn-success" %>
+  <% end %>
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              talks_path, :class => 'btn btn-info'  %>
+
+
+
+<% if current_user.admin? %>
+
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_talk_path(@talk), :class => 'btn btn-primary'  %>
+<% end %>
+</div>
+
